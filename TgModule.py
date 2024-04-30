@@ -5,12 +5,13 @@ import sqlite3
 
 
 class TgModule:
-    def __init__(self, api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link):
+    def __init__(self, api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name):
         self.api_id = api_id
         self.api_hash = api_hash
         self.main_message_link = main_message_link
         self.video_and_photo_group_link = video_and_photo_group_link
         self.decrypt_bot_link = decrypt_bot_link
+        self.db_name = db_name
 
     async def start(self):
         session_name = f"id_{self.api_id}"
@@ -95,7 +96,7 @@ class TgModule:
     # 数据库
     async def insert_message_to_db(self, session_title, session_id, user_id, user_name, user_message, now_time):
         # 连接到 SQLite 数据库
-        conn = sqlite3.connect('example.db')
+        conn = sqlite3.connect(self.db_name)
 
         # 创建一个游标对象，用于执行 SQL 语句
         cur = conn.cursor()
@@ -124,7 +125,8 @@ async def main():
     main_message_link = 'https://t.me/shishixiaoxi'
     video_and_photo_group_link = 'https://t.me/shipinghetupian'
     decrypt_bot_link = "https://t.me/TGFDRobot"
-    tg_module = TgModule(api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link)
+    db_name = "zihao"
+    tg_module = TgModule(api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name)
     await tg_module.start()
 
 
