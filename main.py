@@ -2,7 +2,7 @@ import asyncio
 import configparser
 
 from TgModule import TgModule
-
+from app import app
 config = configparser.ConfigParser()
 config.read("config.ini")
 shield_config = config.get("Telegram", "shield_config")
@@ -44,3 +44,4 @@ async def main():
 if __name__ == "__main__":
     print("自动转发脚本成功运行中")
     asyncio.run(main())
+    app.run(debug=True, port=80)
