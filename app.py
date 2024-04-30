@@ -24,5 +24,9 @@ def get_messages():
         return jsonify({'error': str(e)}), 500
 
 
-if __name__ == '__main__':
+async def run_flask_app():
     app.run(debug=True, port=80)
+
+
+if __name__ == "__main__":
+    run_flask_app()
