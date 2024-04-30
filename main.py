@@ -37,7 +37,7 @@ async def main():
     task1 = asyncio.create_task(tg_module.start())
     task2 = asyncio.create_task(tg_module_2.start())
 
-    # Wait for both tasks to complete
+
     await asyncio.gather(task1, task2)
 
 
