@@ -35,10 +35,10 @@ async def main():
                            db_name_2,
                            oneself_id_2, fruit_list)
     task1 = asyncio.create_task(tg_module.start())
-    # task2 = asyncio.create_task(tg_module_2.start())
+    task2 = asyncio.create_task(tg_module_2.start())
 
     # Wait for both tasks to complete
-    await asyncio.gather(task1)
+    await asyncio.gather(task1, task2c)
 
 
 if __name__ == "__main__":
