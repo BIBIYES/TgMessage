@@ -5,13 +5,16 @@ import sqlite3
 
 
 class TgModule:
-    def __init__(self, api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name):
+    def __init__(self, api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name,
+                 oneself_id, fruit_list):
         self.api_id = api_id
         self.api_hash = api_hash
         self.main_message_link = main_message_link
         self.video_and_photo_group_link = video_and_photo_group_link
         self.decrypt_bot_link = decrypt_bot_link
         self.db_name = db_name
+        self.oneself_id = oneself_id
+        self.fruit_list = fruit_list
 
     async def start(self):
         session_name = f"id_{self.api_id}"
@@ -19,6 +22,16 @@ class TgModule:
 
         @client.on(events.NewMessage())
         async def global_listening(event):
+            try:
+                session = await event.get_chat()
+                session_title = session.title
+                session_id = str(session.id)
+            except Exception as e:
+                session_title = "*私聊*"
+            for fruit in self.fruit_list:
+                if session_id == fruit:
+                    print("当前是被屏蔽的"+session_title+session_id)
+                    return
             await self.get_title(event)
             await self.forward_the_message(event, client)  # Pass the client instance
 
@@ -53,17 +66,17 @@ class TgModule:
             else:
                 print("自己的消息不做转发")
         except Exception as e:
-            print(f"Error in forwarding message: {e}")
+            print(f"无法转发此消息: {e}")
 
     async def get_title(self, event):
         try:
-            group = await event.get_chat()
-            session_title = group.title
+            session = await event.get_chat()
+            session_title = session.title
         except Exception as e:
             session_title = "*私聊*"
 
         try:
-            session_id = str(group.id)
+            session_id = str(session.id)
         except Exception as e:
             session_id = '未知群id'
 
@@ -126,8 +139,11 @@ async def main():
     video_and_photo_group_link = 'https://t.me/shipinghetupian'
     decrypt_bot_link = "https://t.me/TGFDRobot"
     db_name = "zihao"
-    tg_module = TgModule(api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name)
+    oneself_id = 123456789
+    tg_module = TgModule(api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name,
+                         oneself_id)
     await tg_module.start()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
