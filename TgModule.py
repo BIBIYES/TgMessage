@@ -59,7 +59,7 @@ class TgModule:
                 )
             else:
                 if "v_" in event.raw_text or "p_" in event.raw_text or "d_" in event.raw_text:
-                    print("密文消息" + event.raw_text)
+                    # print("密文消息" + event.raw_text)
                     await client.forward_messages(
                         self.decrypt_bot_link, messages=event.message
                     )
@@ -70,7 +70,7 @@ class TgModule:
                     await client.forward_messages(
                         self.main_message_link, messages=event.message
                     )
-                    print("普通消息" + event.raw_text)
+                    # print("普通消息" + event.raw_text)
         except Exception as e:
             print(f"无法转发此消息: {e}")
 
@@ -98,6 +98,8 @@ class TgModule:
                 user_message = "当前消息是图片"
             elif event.media and event.video:
                 user_message = "当前消息是视频"
+            elif event.raw_text == "":
+                user_message = "当前消息是一个表情"
             else:
                 user_message = event.raw_text
             now_time = datetime.now().strftime("%Y-%m-%d %H:%M")
