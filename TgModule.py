@@ -28,43 +28,49 @@ class TgModule:
                 session_id = str(session.id)
             except Exception as e:
                 session_title = "*私聊*"
+            try:
+                session_id = str(session.id)
+            except:
+                session_id = "私聊无会话id"
+            if event.sender_id == self.oneself_id:
+                print("自己的消息不做转发")
+                return
+
             for fruit in self.fruit_list:
                 if session_id == fruit:
-                    print("当前是被屏蔽的"+session_title+session_id)
+                    print("当前是被屏蔽的" + session_title + session_id)
                     return
+            await self.forward_the_message(event, client)
             await self.get_title(event)
-            await self.forward_the_message(event, client)  # Pass the client instance
 
         await client.start()
         await client.run_until_disconnected()
 
     async def forward_the_message(self, event, client):
         try:
-            if event.sender_id != 6731268134:
-                if event.media and event.video:
+
+            if event.media and event.video:
+                await client.forward_messages(
+                    self.video_and_photo_group_link, messages=event.message
+                )
+            elif event.media and event.photo:
+                await client.forward_messages(
+                    self.video_and_photo_group_link, messages=event.message
+                )
+            else:
+                if "v_" in event.raw_text or "p_" in event.raw_text or "d_" in event.raw_text:
+                    print("密文消息" + event.raw_text)
                     await client.forward_messages(
-                        self.video_and_photo_group_link, messages=event.message
+                        self.decrypt_bot_link, messages=event.message
                     )
-                elif event.media and event.photo:
                     await client.forward_messages(
-                        self.video_and_photo_group_link, messages=event.message
+                        self.main_message_link, messages=event.message
                     )
                 else:
-                    if "v_" in event.raw_text or "p_" in event.raw_text or "d_" in event.raw_text:
-                        await client.forward_messages(
-                            self.decrypt_bot_link, messages=event.message
-                        )
-                        await client.forward_messages(
-                            self.main_message_link, messages=event.message
-                        )
-
-
-                    else:
-                        await client.forward_messages(
-                            self.main_message_link, messages=event.message
-                        )
-            else:
-                print("自己的消息不做转发")
+                    await client.forward_messages(
+                        self.main_message_link, messages=event.message
+                    )
+                    print("普通消息" + event.raw_text)
         except Exception as e:
             print(f"无法转发此消息: {e}")
 
@@ -130,20 +136,3 @@ class TgModule:
         # 关闭游标和连接
         cur.close()
         conn.close()
-
-
-async def main():
-    api_id = "24712420"
-    api_hash = '21a296cbfaf9e53a024bf0bc48f14078'
-    main_message_link = 'https://t.me/shishixiaoxi'
-    video_and_photo_group_link = 'https://t.me/shipinghetupian'
-    decrypt_bot_link = "https://t.me/TGFDRobot"
-    db_name = "zihao"
-    oneself_id = 123456789
-    tg_module = TgModule(api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name,
-                         oneself_id)
-    await tg_module.start()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

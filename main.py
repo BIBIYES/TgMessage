@@ -22,7 +22,6 @@ async def main():
 
     tg_module = TgModule(api_id, api_hash, main_message_link, video_and_photo_group_link, decrypt_bot_link, db_name,
                          oneself_id, fruit_list)
-    await tg_module.start()
 
     api_id_2 = "21383434"
     api_hash_2 = '14245aed1a3cd1aac9d5af8973027161'
@@ -36,10 +35,10 @@ async def main():
                            db_name_2,
                            oneself_id_2, fruit_list)
     task1 = asyncio.create_task(tg_module.start())
-    task2 = asyncio.create_task(tg_module_2.start())
+    # task2 = asyncio.create_task(tg_module_2.start())
 
     # Wait for both tasks to complete
-    await asyncio.gather(task1, task2)
+    await asyncio.gather(task1)
 
 
 if __name__ == "__main__":
