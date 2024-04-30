@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 import sqlite3
 from flask_cors import CORS
 
@@ -24,7 +24,7 @@ def get_messages():
         return jsonify({'error': str(e)}), 500
 
 
-async def run_flask_app():
+def run_flask_app():
     app.run(debug=True, port=80)
 
 
