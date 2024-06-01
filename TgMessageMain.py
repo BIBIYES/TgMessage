@@ -29,7 +29,7 @@ async def main():
     main_message_link_2 = 'https://t.me/jiantingXP001'
     video_and_photo_group_link_2 = 'https://t.me/tuheshiXP001'
     decrypt_bot_link_2 = "https://t.me/filespanbot"
-    db_name_2 = "muzi.db"
+    db_name_2 = "muzi"
     oneself_id_2 = 6524572433  # 替换成你的 Telegram ID
 
     tg_module_2 = TgModule(api_id_2, api_hash_2, main_message_link_2, video_and_photo_group_link_2, decrypt_bot_link_2,
