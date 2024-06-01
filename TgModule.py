@@ -117,18 +117,18 @@ class TgModule:
     # 数据库
     async def insert_message_to_db(self, session_title, session_id, user_id, user_name, user_message, now_time):
         # 连接到 SQLite 数据库
-        conn = sqlite3.connect(self.db_name)
+        conn = sqlite3.connect("message")
 
         # 创建一个游标对象，用于执行 SQL 语句
         cur = conn.cursor()
 
         # 检查消息表是否存在，不存在则创建表
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, user_id INTEGER, username TEXT, session_id TEXT, session_title TEXT, message_content TEXT, message_time TEXT)")
+            f"CREATE TABLE IF NOT EXISTS {self.db_name} (id INTEGER PRIMARY KEY, user_id INTEGER, username TEXT, session_id TEXT, session_title TEXT, message_content TEXT, message_time TEXT)")
 
         # 插入数据到消息表
         cur.execute(
-            "INSERT INTO messages (user_id, username, session_id, session_title, message_content, message_time) VALUES (?, ?, ?, ?, ?, ?)",
+            f"INSERT INTO {self.db_name} (user_id, username, session_id, session_title, message_content, message_time) VALUES (?, ?, ?, ?, ?, ?)",
             (user_id, user_name, session_id, session_title, user_message,
              now_time))
 
