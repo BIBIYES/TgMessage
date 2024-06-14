@@ -1,6 +1,6 @@
 from telethon import TelegramClient, events
 from datetime import datetime
-import asyncio
+import time
 import sqlite3
 
 
@@ -102,7 +102,7 @@ class TgModule:
                 user_message = "当前消息是一个表情"
             else:
                 user_message = event.raw_text
-            now_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+            now_time = time.strftime("%Y-%m-%d %H:%M")
         except Exception as e:
             print("无法获取用户消息对象")
 
